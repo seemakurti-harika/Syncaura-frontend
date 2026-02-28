@@ -28,6 +28,7 @@ import { refreshAccessToken } from "./redux/features/authThunks";
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
 import ProtectRoute from "./RouteProtection/ProtectRoute";
+import CoAdmin from "./pages/CoAdmin";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -86,10 +87,24 @@ export default function App() {
               path="/admin"
               element={
                 <MainLayout
-                  SideBar={AdminSidebar}
-                  TopbarComponent={AdminHeader}
+                  SideBar={MobileSidebar}
+                  TopbarComponent={Header}
                 >
                   <Admin />
+                </MainLayout>
+              }
+            />
+          </Route>
+
+          <Route element={<ProtectRoute allowedRoles={["co-admin"]} />}>
+            <Route
+              path="/co-admin"
+              element={
+                <MainLayout
+                  SideBar={MobileSidebar}
+                  TopbarComponent={Header}
+                >
+                  <CoAdmin />
                 </MainLayout>
               }
             />
