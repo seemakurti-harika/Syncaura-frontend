@@ -1,72 +1,188 @@
-import AdminStats from "../components/admin/AdminStats";
-import AdminTable from "../components/admin/AdminTable";
-import { Clock } from "lucide-react";
-import { useSelector } from "react-redux";
+import React from "react";
+import { motion } from "framer-motion";
 
-const DashboardHeader = ({ isDark }) => {
-  return (
-    <div className="flex items-center justify-between mb-8">
-      {/* LEFT */}
-      <div>
-        <h1
-          className={`font-poppins text-[28px] ml-9 mt-2 font-bold leading-[100%] ${
-            isDark ? "text-[#F1F5F9]" : "text-gray-900"
-          }`}
-        >
-          Dashboard Overview
-        </h1>
+import MobileSidebar from "../components/MobileSidebar";
 
-        <p
-          className={`mt-[18px] ml-9 font-poppins text-[18.5px] font-semibold leading-[100%] ${
-            isDark ? "text-[#94A3B8]" : "text-gray-600"
-          }`}
-        >
-          Welcome back, here&apos;s what&apos;s happening today.
-        </p>
-      </div>
+import StatCard from "../components/admin/admindashboard/statCard";
+import ProjectStatus from "../components/admin/admindashboard/ProjectStatus";
+import ProjectRisks from "../components/admin/admindashboard/ProjectRisks";
+import ProductivityTrend from "../components/admin/admindashboard/ProductivityTrend";
+import SprintSuccessRate from "../components/admin/admindashboard/SprintSuccessRate";
+import ResourceUtilization from "../components/admin/admindashboard/ResourceUtilization";
+import BudgetUsage from "../components/admin/admindashboard/BudgetUsage";
+import IssuesAndAlerts from "../components/admin/admindashboard/IssuesAndAlerts";
 
-      {/* RIGHT: LAST UPDATED BOX */}
-      <div
-        className={`w-[238px] h-[42px] flex items-center gap-2 px-[12px] rounded-[7px] ${
-          isDark ? "bg-[#1E293B]" : "bg-[#F1F5F9]"
-        }`}
-      >
-      
-        <span
-          className={`font-poppins text-[11px] font-semibold leading-[100%] ${
-            isDark ? "text-[#64748B]" : "text-gray-500"
-          } whitespace-nowrap`}
-        >
-          Last updated: Just now
-        </span>
-         <Clock className={`ml-16 w-4 h-4 ${isDark ? "text-[#64748B]" : "text-gray-500"}`} />
-      </div>
-    </div>
-  );
+import { FaFolder, FaCheckCircle, FaExclamationTriangle } from "react-icons/fa";
+import { FaCirclePlay } from "react-icons/fa6";
+import { LuUsers } from "react-icons/lu";
+
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 30 },
+  show: { opacity: 1, y: 0 },
 };
 
 const Admin = () => {
-  const isDark = useSelector((state) => state.theme.isDark);
-
   return (
-    <div
-      className={`flex min-h-screen transition-colors ${
-        isDark ? "bg-[#0B1220] text-white" : "bg-white text-gray-900"
-      }`}
-    >
-      {/* Dashboard content */}
-      <main className="flex-1 p-6">
-        {/* Dashboard Overview */}
-        <DashboardHeader isDark={isDark} />
+    <div className="flex min-h-screen bg-gray-50 dark:bg-[#0a0a0a] transition-colors duration-300">
 
-        {/* Stats Cards */}
-        <div className="mb-6">
-          <AdminStats isDark={isDark} />
-        </div>
+      {/* Sidebar */}
+      <MobileSidebar />
 
-        {/* Table / Charts */}
-        <AdminTable isDark={isDark} />
-      </main>
+      <div className="flex-1 overflow-x-hidden">
+
+        <motion.div
+          className="p-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4 }}
+        >
+
+          {/* Dashboard Title */}
+          <div className="flex items-center gap-6 mb-8">
+
+            <h1 className="text-2xl font-bold dark:text-white">
+              Dashboard
+            </h1>
+
+            <div className="flex bg-white dark:bg-[#1a1f26]/50 border-zinc-600 dark:border-zinc-800 rounded-lg p-1 shadow-sm">
+
+              <button className="dark:bg-[#1e293b] text-blue-600 dark:text-blue-400 px-4 py-1 rounded-md text-xs font-bold transition">
+                Dashboard
+              </button>
+
+              <button className="text-gray-400 hover:text-gray-600 dark:text-zinc-500 dark:hover:text-zinc-300 px-4 py-1 text-xs font-semibold transition">
+                Projects
+              </button>
+
+              <button className="text-gray-400 hover:text-gray-600 dark:text-zinc-500 dark:hover:text-zinc-300 px-4 py-1 text-xs font-semibold transition">
+                Analytics
+              </button>
+
+            </div>
+
+          </div>
+
+          {/* Stat Cards */}
+          <motion.div
+            variants={container}
+            initial="hidden"
+            animate="show"
+            className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8"
+          >
+
+            <motion.div variants={item}>
+              <StatCard
+                title="TOTAL PROJECTS"
+                value="42"
+                icon={<FaFolder />}
+                iconBg="bg-blue-50 dark:bg-cyan-950/30"
+                iconColor="text-blue-500 dark:text-cyan-400"
+                percent="5%"
+                percentBg="bg-green-50 dark:bg-green-900/20"
+                percentColor="text-green-600 dark:text-green-500"
+              />
+            </motion.div>
+
+            <motion.div variants={item}>
+              <StatCard
+                title="ACTIVE"
+                value="12"
+                icon={<FaCirclePlay />}
+                iconBg="bg-blue-50 dark:bg-cyan-950/30"
+                iconColor="text-blue-500 dark:text-cyan-400"
+                percent="0%"
+                percentBg="bg-gray-100 dark:bg-zinc-800"
+                percentColor="text-gray-500 dark:text-zinc-400"
+              />
+            </motion.div>
+
+            <motion.div variants={item}>
+              <StatCard
+                title="DELAYED"
+                value="3"
+                icon={<FaExclamationTriangle />}
+                iconBg="bg-orange-50 dark:bg-red-950/20"
+                iconColor="text-orange-500 dark:text-red-500"
+                percent="HIGH RISK"
+                percentBg="bg-orange-100 dark:bg-transparent"
+                percentColor="text-orange-600 dark:text-red-600"
+              />
+            </motion.div>
+
+            <motion.div variants={item}>
+              <StatCard
+                title="COMPLETED"
+                value="27"
+                icon={<FaCheckCircle />}
+                iconBg="bg-green-50 dark:bg-green-950/20"
+                iconColor="text-green-600 dark:text-green-500"
+                percent="5%"
+                percentBg="bg-green-50 dark:bg-green-900/20"
+                percentColor="text-green-600 dark:text-green-500"
+              />
+            </motion.div>
+
+            <motion.div variants={item}>
+              <StatCard
+                title="TOTAL USERS"
+                value="128"
+                icon={<LuUsers />}
+                iconBg="bg-purple-50 dark:bg-purple-950/20"
+                iconColor="text-purple-500"
+                percent="12%"
+                percentBg="bg-green-50 dark:bg-green-900/20"
+                percentColor="text-green-600 dark:text-green-500"
+              />
+            </motion.div>
+
+          </motion.div>
+
+          {/* Dashboard Sections */}
+          <div className="grid grid-cols-1 gap-6">
+
+            <motion.div variants={item} initial="hidden" animate="show">
+              <ProjectStatus />
+            </motion.div>
+
+            <motion.div variants={item} initial="hidden" animate="show">
+              <ProjectRisks />
+            </motion.div>
+
+            <motion.div variants={item} initial="hidden" animate="show">
+              <ProductivityTrend />
+            </motion.div>
+
+            <motion.div variants={item} initial="hidden" animate="show">
+              <SprintSuccessRate />
+            </motion.div>
+
+            <motion.div variants={item} initial="hidden" animate="show">
+              <ResourceUtilization />
+            </motion.div>
+
+            <motion.div variants={item} initial="hidden" animate="show">
+              <BudgetUsage />
+            </motion.div>
+
+            <motion.div variants={item} initial="hidden" animate="show">
+              <IssuesAndAlerts />
+            </motion.div>
+
+          </div>
+
+        </motion.div>
+
+      </div>
     </div>
   );
 };
