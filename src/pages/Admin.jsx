@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 import MobileSidebar from "../components/MobileSidebar";
 
-import StatCard from "../components/admin/admindashboard/statCard";
+import statCard from "../components/admin/admindashboard/statCard";
 import ProjectStatus from "../components/admin/admindashboard/ProjectStatus";
 import ProjectRisks from "../components/admin/admindashboard/ProjectRisks";
 import ProductivityTrend from "../components/admin/admindashboard/ProductivityTrend";
